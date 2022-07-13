@@ -10,8 +10,8 @@ var prediction = [];
 
 var word = "apple";
 
-canvas.width = 400;
-canvas.height = 400;
+canvas.width = 1000;
+canvas.height = 550;
 
 ctx.fillStyle="white";
 ctx.fillRect(0,0,canvas.width, canvas.height);

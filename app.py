@@ -98,6 +98,7 @@ def format_output(output):
 @app.route('/predict/', methods=['GET', 'POST'])
 def predict():
 
+
     
     output = request.json
     #model_input = format_output(output)
