@@ -4,7 +4,7 @@ import json
 import tensorflow as tf
 import numpy as np
 import binascii
-import imageio
+#import imageio
 
 
 
@@ -89,7 +89,7 @@ def format_output(output):
     
     #model_input = model_input.reshape(1, 28, 28, 1)
     model_input = 255-model_input
-    imageio.imwrite('name.jpg', model_input[0][:,:,0])
+    #imageio.imwrite('name.jpg', model_input[0][:,:,0])
     model_input /= 255.0
     
 
