@@ -3,7 +3,8 @@ from flask import Flask, render_template, request, jsonify
 import json
 import tensorflow as tf
 import numpy as np
-#import imageio
+import binascii
+import imageio
 
 
 
@@ -35,6 +36,12 @@ def index_view():
 
 def format_output(output):
 
+    output[0] = binascii.a2b_base64(output[0])
+
+
+    new_out = [int(d)-48 for d in output[0]]
+
+
 
     data_window = output[1]
     x_min = data_window["x"]["min"]
@@ -56,7 +63,13 @@ def format_output(output):
     big_padding = int((big_dim-small_dim)/2) + small_padding
 
 
-    model_input = np.array(output[0]).reshape(1, height,width,1)
+
+
+
+    model_input = np.array(new_out).reshape(1, height,width,1)
+    model_input = model_input *255
+
+
 
     
 
@@ -76,7 +89,7 @@ def format_output(output):
     
     #model_input = model_input.reshape(1, 28, 28, 1)
     model_input = 255-model_input
-    #imageio.imwrite('name.jpg', model_input[0][:,:,0])
+    imageio.imwrite('name.jpg', model_input[0][:,:,0])
     model_input /= 255.0
     
 

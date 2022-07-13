@@ -40,7 +40,7 @@ newWord();
 
 var intervalId = window.setInterval(function(){
 	guess();
-  }, 1000);
+  }, 1500);
 
 
 
@@ -74,6 +74,38 @@ canvas.addEventListener("mouseup", function()
 
 	}, false );
 
+
+
+	canvas.addEventListener( "touchmove", function(e)
+	{
+
+
+		prevMouse.x = mouse.x;
+		prevMouse.y = mouse.y;
+
+		mouse.x = getXY(canvas, e).x;
+		mouse.y = getXY(canvas, e).y;
+
+	}, false );
+
+canvas.addEventListener("touchstart", function()
+	{
+		canvas.addEventListener("touchmove", paint, false);
+
+	}, false );
+
+canvas.addEventListener("touchend", function()
+	{
+		strokes.push([Xcoordinates, Ycoordinates]);
+		strokeXcoordinates = [];
+		strokeYcoordinates = [];
+		canvas.removeEventListener( "touchmove", paint, false );
+		guessingQueue = [];
+		sendData();
+		
+
+	}, false );
+
 function getXY(canvas, event) {
 		  // absolute position of canvas
 		return {
@@ -101,7 +133,14 @@ var paint = function(){
 
 }
 
+
+
+
+
+
 function sendData(){
+
+	
 	
 	dataWindow = getBoundingBox();
 	const height = dataWindow.y.max - dataWindow.y.min;
@@ -109,11 +148,33 @@ function sendData(){
 	//dimension = Math.max(height, width);
 	imageData=ctx.getImageData(dataWindow.x.min, dataWindow.y.min,
 		width, height);
+	
 
-	 formattedImageData = [];
-	 for (i = 0; i < imageData.data.length; i=i+4) {
-		formattedImageData.push(imageData.data[i]);
-	  }
+
+	
+		var temp = "";
+		
+
+		for(i=0; i<imageData.data.length; i=i+4){
+	
+			
+	
+			temp += String(Math.ceil(imageData.data[i]/255));
+	
+	
+	
+		}
+
+
+
+
+
+		formattedImageData = btoa(temp);
+		
+	
+
+
+
 
 
 	
@@ -122,6 +183,7 @@ function sendData(){
 	//data = [strokes, dataWindow];
 	
 	const jsonImageData = JSON.stringify(data);
+
 	const URL = '/predict'
 	let request_options = {
 		method:"POST",
@@ -181,6 +243,10 @@ function sendData(){
 	
 
 }
+
+
+
+
 
 
 
