@@ -80,11 +80,13 @@ canvas.addEventListener("mouseup", function()
 	{
 
 
+
+
 		prevMouse.x = mouse.x;
 		prevMouse.y = mouse.y;
 
-		mouse.x = getXY(canvas, e).x;
-		mouse.y = getXY(canvas, e).y;
+		mouse.x = getTouchXY(canvas, e).x;
+		mouse.y = getTouchXY(canvas, e).y;
 
 	}, false );
 
@@ -107,11 +109,22 @@ canvas.addEventListener("touchend", function()
 	}, false );
 
 function getXY(canvas, event) {
-		  // absolute position of canvas
 		return {
 			x: event.clientX - rect.left,
 			y: event.clientY - rect.top
 		}
+}
+
+
+function getTouchXY(canvas, event){
+
+	var touch = e.touches[0];
+
+	return {
+		x: touch.clientX - rect.left,
+		y: touch.clientY - rect.top
+	}
+
 }
 
 
